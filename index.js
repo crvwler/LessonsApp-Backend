@@ -6,6 +6,11 @@ const cors = require("cors");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+const lessonRoutes = require("./routes/lessonRoutes");
+
+// Routes
+app.use("/lessons", lessonRoutes);
+
 // Middleware
 app.use(express.json());
 app.use(cors());
