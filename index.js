@@ -38,3 +38,11 @@ app.get("/", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+// Middleware
+const path = require("path");
+
+app.use("/images", express.static(path.join(__dirname, "images")));
+app.use((req, res) => {
+  res.status(404).send("Image not found");
+});
