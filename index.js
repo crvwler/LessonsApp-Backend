@@ -3,7 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const path = require("path");
-
+const connectDB = require("./db");
 const lessonRoutes = require("./routes/lessonRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 
@@ -21,7 +21,7 @@ app.use((req, res, next) => {
 });
 
 // Static Files Middleware
-app.use("/images", express.static(path.join(__dirname, "images")));
+app.use("/images", express.static("public/images"));
 
 // Routes
 app.use("/lessons", lessonRoutes);
@@ -37,11 +37,8 @@ app.use((req, res) => {
   res.status(404).send("Route not found");
 });
 
-// Connect to MongoDB
-mongoose
-  .connect(process.env.MONGO_URI, {})
-  .then(() => console.log("Connected to MongoDB"))
-  .catch((err) => console.error(err));
+// Connect to the database
+connectDB();
 
 // Start Server
 app.listen(PORT, () => {
