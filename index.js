@@ -20,8 +20,8 @@ app.use((req, res, next) => {
   next();
 });
 
-// Static Files Middleware
-app.use("/images", express.static("public/images"));
+// Serve Static Files Middleware
+app.use("/images", express.static(path.join(__dirname, "public", "images")));
 
 // Routes
 app.use("/lessons", lessonRoutes);
