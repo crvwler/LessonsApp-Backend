@@ -1,6 +1,6 @@
 const express = require("express");
-const Lesson = require("../models/Lesson");
 const router = express.Router();
+const Lesson = require("../models/Lesson");
 
 // GET all lessons
 router.get("/", async (req, res) => {
@@ -8,21 +8,18 @@ router.get("/", async (req, res) => {
     const lessons = await Lesson.find();
     res.json(lessons);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(500).send("Server Error");
   }
 });
 
-// PUT to update lesson space
-router.put("/:id", async (req, res) => {
+// POST a new lesson
+router.post("/", async (req, res) => {
   try {
-    const updatedLesson = await Lesson.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
-    res.json(updatedLesson);
+    const newLesson = new Lesson(req.body);
+    await newLesson.save();
+    res.status(201).json(newLesson);
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.status(400).send("Bad Request");
   }
 });
 
