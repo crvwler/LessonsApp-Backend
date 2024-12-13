@@ -1,23 +1,23 @@
 const express = require("express");
 const router = express.Router();
-const Order = require("../models/Order");
+const connectDB = require("../db");
 
 // POST a new order
 router.post("/", async (req, res) => {
+  const db = await connectDB();
   console.log("Order route hit");
   try {
     const { name, phone, lessonIDs, numberOfSpaces } = req.body;
 
-    // Create new Order with provided data
-    const newOrder = new Order({
+    const newOrder = {
       name,
       phone,
       lessonIDs,
       numberOfSpaces,
-    });
+    };
 
-    await newOrder.save();
-    res.status(201).json(newOrder);
+    const result = await db.collection("orders").insertOne(newOrder);
+    res.status(201).json(result.ops[0]);
   } catch (err) {
     res.status(400).send("Bad Request");
   }
@@ -25,8 +25,9 @@ router.post("/", async (req, res) => {
 
 // GET all orders
 router.get("/", async (req, res) => {
+  const db = await connectDB();
   try {
-    const orders = await Order.find();
+    const orders = await db.collection("orders").find().toArray();
     res.status(200).json(orders);
   } catch (err) {
     res.status(500).send("Error retrieving orders");
