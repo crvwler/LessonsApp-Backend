@@ -7,7 +7,7 @@ const orderRoutes = require("./routes/orderRoutes");
 const connectDB = require("./db");
 
 const app = express();
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(express.json());
